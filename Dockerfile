@@ -1,7 +1,14 @@
 FROM node:18-alpine
 WORKDIR /app
-COPY package*.json ./
-RUN npm install --production
+
+# Copy package files
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm ci --only=production
+
+# Copy application code
 COPY . .
+
 EXPOSE 8080
-CMD ["npm", "start"]
+CMD ["node", "index.js"]
