@@ -7,8 +7,18 @@ require('dotenv').config();
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
 
-app.use(cors());
+// Enable CORS for all origins
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use(express.json());
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 const SM8_TOKEN = process.env.SM8_TOKEN || 'smk-a5f784-bcf831f418766718-c61b510d0ddb07db';
 
